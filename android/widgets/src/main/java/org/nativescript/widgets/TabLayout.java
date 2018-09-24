@@ -71,6 +71,9 @@ public class TabLayout extends HorizontalScrollView {
     private static final int LARGE_MIN_HEIGHT = 72;
 
     private int mTitleOffset;
+    private int mCustomTitleOffset;
+    private int mPadding;
+    private int mTextSize;
 
     private boolean mDistributeEvenly = true;
 
@@ -96,7 +99,7 @@ public class TabLayout extends HorizontalScrollView {
         // Make sure that the Tab Strips fills this View
         setFillViewport(true);
 
-        mTitleOffset = (int) (TITLE_OFFSET_DIPS * getResources().getDisplayMetrics().density);
+        mTitleOffset = (int) ((mCustomTitleOffset > 0 ? mCustomTitleOffset : TITLE_OFFSET_DIPS) * getResources().getDisplayMetrics().density);
 
         mTabStrip = new TabStrip(context);
         addView(mTabStrip, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -114,6 +117,19 @@ public class TabLayout extends HorizontalScrollView {
 
     public void setDistributeEvenly(boolean distributeEvenly) {
         mDistributeEvenly = distributeEvenly;
+    }
+
+    public void setTabTitleOffset(int offset) {
+        mCustomTitleOffset = offset;
+        mTitleOffset = (int) ((mCustomTitleOffset > 0 ? mCustomTitleOffset : TITLE_OFFSET_DIPS) * getResources().getDisplayMetrics().density);
+    }
+
+    public void setTabItemPadding(int padding) {
+        mPadding = padding;
+    }
+
+    public void setTabItemTextSize(int size) {
+        mTextSize = size;
     }
 
     /**
@@ -153,6 +169,14 @@ public class TabLayout extends HorizontalScrollView {
 
     public float getTabTextFontSize(){
         return mTabStrip.getTabTextFontSize();
+    }
+
+    public void setMeasureBasedOnLargest(boolean enabled){
+        mTabStrip.setMeasureBasedOnLargest(enabled);
+    }
+
+    public boolean getMeasureBasedOnLargest() {
+      return mTabStrip.getMeasureBasedOnLargest();
     }
 
     /**
@@ -230,7 +254,7 @@ public class TabLayout extends HorizontalScrollView {
      */
     protected View createDefaultTabView(Context context, TabItemSpec tabItem) {
         float density = getResources().getDisplayMetrics().density;
-        int padding = (int) (TAB_VIEW_PADDING_DIPS * density);
+        int padding = (int) ((mPadding >= 0 ? mPadding : TAB_VIEW_PADDING_DIPS) * density);
 
         LinearLayout ll = new LinearLayout(context);
         ll.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));

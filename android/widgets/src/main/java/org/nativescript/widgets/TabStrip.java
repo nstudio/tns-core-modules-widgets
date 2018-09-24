@@ -48,6 +48,7 @@ class TabStrip extends LinearLayout {
     private TabLayout.TabColorizer mCustomTabColorizer;
     private final SimpleTabColorizer mDefaultTabColorizer;
 
+    private boolean mMeasureBasedOnLargest = false;
     private int mTabTextColor;
     private int mSelectedTabTextColor;
     private float mTabTextFontSize;
@@ -87,7 +88,8 @@ class TabStrip extends LinearLayout {
         // Default selected color is the same as mTabTextColor
         mSelectedTabTextColor = mTabTextColor;
 
-        setMeasureWithLargestChildEnabled(true);
+        // System.out.println("TabStrip constructor setMeasureBasedOnLargest");
+        setMeasureWithLargestChildEnabled(mMeasureBasedOnLargest);
     }
 
     void setCustomTabColorizer(TabLayout.TabColorizer customTabColorizer) {
@@ -157,6 +159,16 @@ class TabStrip extends LinearLayout {
         mSelectionOffset = positionOffset;
         invalidate();
         updateTabsTextColor();
+    }
+
+    void setMeasureBasedOnLargest(boolean enabled) {
+        mMeasureBasedOnLargest = enabled;
+        // System.out.println("setter setMeasureBasedOnLargest");
+        // setMeasureWithLargestChildEnabled(enabled);
+    }
+
+    boolean getMeasureBasedOnLargest() {
+      return mMeasureBasedOnLargest;
     }
 
     @Override
