@@ -55,6 +55,11 @@ public class TabViewPager extends ViewPager {
 
     @Override
     public void setCurrentItem(int item) {
+      try {
+        // in case the item no longer exists
         super.setCurrentItem(item, this.swipePageEnabled);
+			} catch (IllegalArgumentException exception) {
+        
+			}
     }
 }
