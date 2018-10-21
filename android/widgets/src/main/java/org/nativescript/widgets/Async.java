@@ -78,6 +78,7 @@ public class Async
 
 	public interface CompleteCallback {
 		void onComplete(Object result, Object tag);
+    void onError(Object tag);
 	}
 
 	public static class Image {
@@ -171,24 +172,28 @@ public class Async
 					Bitmap bmp = BitmapFactory.decodeStream(stream);
 					return bmp;
 				} catch (MalformedURLException e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 					return null;
 				} catch (IOException e) {
-					e.printStackTrace();
+					// e.printStackTrace();
 					return null;
 				} finally {
 					if (stream != null) {
 						try {
 							stream.close();
 						} catch (IOException e) {
-							e.printStackTrace();
+							// e.printStackTrace();
 						}
 					}
 				}
 			}
 
 			protected void onPostExecute(final Bitmap result) {
-				this.callback.onComplete(result, this.context);
+        if (result != null) {
+				  this.callback.onComplete(result, this.context);
+        } else {
+          this.callback.onError(this.context);
+        }
 			}
 		}
 
@@ -217,7 +222,11 @@ public class Async
 			}
 
 			protected void onPostExecute(final Bitmap result) {
-				this.callback.onComplete(result, this.requestId);
+        if (result != null) {
+				  this.callback.onComplete(result, this.requestId);
+        } else {
+          this.callback.onError(this.requestId);
+        }       
 			}
 		}
 
@@ -236,7 +245,11 @@ public class Async
 			}
 
 			protected void onPostExecute(final Bitmap result) {
-				this.callback.onComplete(result, this.requestId);
+        if (result != null) {
+				  this.callback.onComplete(result, this.requestId);
+        } else {
+          this.callback.onError(this.requestId);
+        }
 			}
 		}
 
@@ -256,7 +269,11 @@ public class Async
 			}
 
 			protected void onPostExecute(final Bitmap result) {
-				this.callback.onComplete(result, this.requestId);
+        if (result != null) {
+				  this.callback.onComplete(result, this.requestId);
+        } else {
+          this.callback.onError(this.requestId);
+        }
 			}
 		}
 	}
@@ -593,7 +610,11 @@ public class Async
 
 			protected void onPostExecute(final RequestResult result)
 			{
-				this.callback.onComplete(result, this.context);
+        if (result != null) {
+				  this.callback.onComplete(result, this.context);
+        } else {
+          this.callback.onError(this.context);
+        }
 			}
 
 			private void closeOpenedStreams(Stack<Closeable> streams) throws IOException
